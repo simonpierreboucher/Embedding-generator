@@ -5,14 +5,18 @@
 [![GitHub Forks](https://img.shields.io/github/forks/simonpierreboucher/llm-generate-function)](https://github.com/simonpierreboucher/llm-generate-function/network)
 [![GitHub Stars](https://img.shields.io/github/stars/simonpierreboucher/llm-generate-function)](https://github.com/simonpierreboucher/llm-generate-function/stargazers)
 
-A Python tool for generating embeddings from text documents using the OpenAI API. It splits documents into configurable-sized chunks and generates embeddings for each chunk.
+A Python tool for generating embeddings from text documents using multiple providers including OpenAI, Mistral AI, Voyage AI, and Cohere. It splits documents into configurable-sized chunks and generates embeddings for each chunk.
 
 ## Features
 
+- Support for multiple embedding providers:
+  - OpenAI
+  - Mistral AI
+  - Voyage AI
+  - Cohere
 - Multiple text file processing
 - Configurable chunk sizing
 - Document header management
-- OpenAI API embedding generation
 - Multiple output formats (CSV, JSON, NPY)
 - Error handling and retries
 - YAML-based configuration
@@ -20,7 +24,7 @@ A Python tool for generating embeddings from text documents using the OpenAI API
 ## Prerequisites
 
 ```bash
-pip install openai tiktoken numpy pandas tqdm pyyaml
+pip install openai tiktoken numpy pandas tqdm pyyaml requests
 ```
 
 ## Configuration
@@ -29,8 +33,10 @@ Create a `config.yaml` file with the following structure:
 
 ```yaml
 api:
-  key: "your-openai-api-key"
-  model: "text-embedding-3-large"
+  provider:
+    name: "openai"  # Options: "openai", "mistral", "voyage", "cohere"
+    key: "your-api-key"
+    model: "text-embedding-3-large"  # Model varies by provider
   max_retries: 3
   retry_delay: 2
 
@@ -51,29 +57,132 @@ output:
 
 ### Configuration Parameters
 
-#### API
-- `key`: Your OpenAI API key
-- `model`: Embedding model to use
-- `max_retries`: Maximum number of retry attempts
-- `retry_delay`: Base delay for exponential backoff
+#### API Provider Settings
+- OpenAI
+  - `model`: "text-embedding-3-large"
+  - Key environment variable: `OPENAI_API_KEY`
 
-#### Paths
-- `input_folder`: Directory containing text files to process
-- `output_base`: Base directory for output files
+- Mistral AI
+  - `model`: "mistral-embed"
+  - Key environment variable: `MISTRAL_API_KEY`
 
-#### Processing
-- `chunk_sizes`: List of chunk sizes to generate
-- `header_lines`: Number of lines to keep as header
+- Voyage AI
+  - `model`: "voyage-large-2"
+  - Key environment variable: `VOYAGE_API_KEY`
 
-#### Output
-- `formats`: Desired output formats (csv, json, npy)
+- Cohere
+  - `model`: "embed-english-v3.0"
+  - Key environment variable: `CO_API_KEY`
+
+[Rest of the configuration parameters remain the same]
 
 ## Usage
 
-1. Set up your OpenAI API key:
+1. Set up your API key for the chosen provider:
 ```bash
+# For OpenAI
 export OPENAI_API_KEY='your-api-key'
+# For Mistral
+export MISTRAL_API_KEY='your-api-key'
+# For Voyage
+export VOYAGE_API_KEY='your-api-key'
+# For Cohere
+export CO_API_KEY='your-api-key'
 ```
+
+2. Configure your provider in `config.yaml`
+3. Prepare your text files in the input directory
+4. Run the script:
+```bash
+python embedding_generator.py
+```
+
+## Provider-Specific Features
+
+### OpenAI
+- High-quality embeddings
+- Extensive model options
+- Reliable API performance
+
+### Mistral AI
+- Competitive pricing
+- Good performance for multiple languages
+- Modern embedding models
+
+### Voyage AI
+- Specialized for specific use cases
+- Competitive pricing
+- Good documentation
+
+### Cohere
+- Multiple embedding types
+- Classification-specific embeddings
+- Extensive language support
+
+[Output Structure section remains the same]
+
+## Error Handling
+
+- Provider-specific error handling
+- Automatic retry on API failure
+- Exponential backoff between attempts
+- Error and warning logging
+- Continues processing if a provider fails
+
+## Methods Description
+
+### Provider Classes
+
+#### `OpenAIProvider`
+Handles embedding generation using OpenAI's API.
+
+#### `MistralProvider`
+Manages embeddings through Mistral AI's API.
+
+#### `VoyageProvider`
+Processes embeddings using Voyage AI's API.
+
+#### `CohereProvider`
+Generates embeddings via Cohere's API.
+
+[Rest of the methods description remains the same]
+
+## Limitations
+
+- Requires valid API key for chosen provider
+- Different rate limits per provider
+- Varying embedding dimensions between providers
+- Provider-specific model limitations
+- Processes .txt files only
+
+## Best Practices
+
+[Previous best practices, plus:]
+
+4. **Provider Selection**
+   - Choose provider based on your needs:
+     - OpenAI for general purpose
+     - Mistral for multilingual
+     - Voyage for specialized cases
+     - Cohere for classification
+
+5. **API Management**
+   - Monitor usage across providers
+   - Consider provider-specific rate limits
+   - Keep API keys secure
+
+[Rest of the sections remain the same]
+
+## Provider Comparison
+
+| Provider | Strengths | Use Cases |
+|----------|-----------|----------|
+| OpenAI | High quality, reliable | General purpose |
+| Mistral | Good multilingual support | International content |
+| Voyage | Specialized features | Domain-specific |
+| Cohere | Classification focus | Text classification |
+
+
 
 2. Prepare your text files in the input directory
 
