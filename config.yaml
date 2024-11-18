@@ -2,7 +2,10 @@ api:
   provider:
     name: "openai"  # "openai", "mistral", "voyage", "cohere"
     key: "your-api-key"
-    model: "text-embedding-3-large"
+    model: "text-embedding-ada-002"  # Mettez à jour le modèle d'embedding si nécessaire
+  llm_model: "gpt-4"  # ou "gpt-3.5-turbo" si vous n'avez pas accès à gpt-4
+  llm_max_input_tokens: 8192
+  llm_max_output_tokens: 256
   max_retries: 3
   retry_delay: 2
 
