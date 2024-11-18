@@ -1,17 +1,18 @@
-# config.yaml
 api:
-  key: "openai-api-key"
-  model: "text-embedding-3-large"
+  provider:
+    name: "openai"  # "openai", "mistral", "voyage", "cohere"
+    key: "your-api-key"
+    model: "text-embedding-3-large"
   max_retries: 3
-  retry_delay: 2  # Délai de base pour le backoff exponentiel
+  retry_delay: 2
 
 paths:
-  input_folder: "/Users/simon-pierreboucher/Desktop/ouellet/text/www.ouellet.com"
-  output_base: "output"  # Dossier de base pour les sorties
+  input_folder: "/path/to/input/folder"
+  output_base: "output"
 
 processing:
   chunk_sizes: [400, 800, 1200]
-  header_lines: 2  # Nombre de lignes à conserver comme en-tête
+  header_lines: 2
 
 output:
   formats:
